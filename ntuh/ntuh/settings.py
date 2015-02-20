@@ -13,13 +13,13 @@ BOT_NAME = 'ntuhPsy'
 SPIDER_MODULES = ['ntuh.spiders']
 NEWSPIDER_MODULE = 'ntuh.spiders'
 USER_AGENT = "Chrome/40.0.2214.111"
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 0.25
+LOG_FILE = 'log.txt'
 
-
-FEED_FORMAT = 'csv'
+FEED_URI = 'export.json'
+FEED_FORMAT = 'json'
 FEED_EXPORTERS = {
-    'csv': 'scrapy.contrib.exporter.CsvItemExporter'
+   'json': 'ntuh.pipelines.UnicodeJsonItemExporter'
 }
-
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'ntuh (+http://www.yourdomain.com)'

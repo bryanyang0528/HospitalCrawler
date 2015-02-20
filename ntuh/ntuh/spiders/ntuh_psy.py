@@ -30,10 +30,11 @@ class NtuhPsy(scrapy.Spider):
         for day in range(7):
             for n in range(len(table1)-1):
                 item = NtuhItem()
-                item['name'] = table1[n+1].xpath('.//td')[day+2].xpath('.//font/text()').extract()
+                name = table1[n+1].xpath('.//td')[day+2].xpath('.//font/text()').extract()
                 #print item['name']
-                if (item['name'] == []):
+                if (name == []):
                     continue
+                item['name'] = name[0]
                 item['hospital'] = 'ntuh'
                 item['dept'] = 'PSY'
                 item['date'] = table1[0].xpath('.//b/text()')[day+2].extract().split(" ")[0]
@@ -47,13 +48,13 @@ class NtuhPsy(scrapy.Spider):
     def parse_shift(self, response):
 
         item = response.meta['item']
-        item['full'] = Selector(response).xpath('//table[@id= "DataTable"]/tr')[1].\
-            xpath('.//font/text()').extract()[0]
-        
-        if (item['full'] == '名額已滿'):
-            item['full'] == '名額已滿'
+        isFull = Selector(response).xpath('//table[@id= "DataTable"]/tr')[1].\
+            xpath('.//font/text()').extract()[0].strip()
+
+        if (isFull == u'名額已滿'):
+            item['full'] = u'名額已滿'
         else:
-            item['full'] == '可掛號'
+            item['full'] = u'可掛號'
 
         return item
 
