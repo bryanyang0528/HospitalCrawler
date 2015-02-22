@@ -23,27 +23,60 @@ class NtuhPsy(scrapy.Spider):
         
         items = []
         sel = Selector(response)
-        table1 = sel.xpath('//table[@id="Table1"]/tr')
+        ##一個頁面有四個table
+        tables = sel.xpath('//tr/td/table')
+        #table1 = sel.xpath('//table[@id="Table1"]/tr')
         #print table1.extract()
-        print 'len of table1 = '+ str(len(table1))
+        print 'len of table = '+ str(len(tables))
 
-        for day in range(7):
-            for n in range(len(table1)-1):
-                item = NtuhItem()
-                name = table1[n+1].xpath('.//td')[day+2].xpath('.//font/text()').extract()
-                #print item['name']
-                if (name == []):
-                    continue
-                item['name'] = name[0]
-                item['hospital'] = 'ntuh'
-                item['dept'] = 'PSY'
-                item['date'] = table1[0].xpath('.//b/text()')[day+2].extract().split(" ")[0]
-                item['time'] = 'morning'
-                item['link'] = "https://reg.ntuh.gov.tw/webadministration/" + \
-                    table1[n+1].xpath('.//td')[day+2].xpath('.//a/@href').extract()[0]
-                yield Request(item['link'], callback = self.parse_shift, meta = {'item': item})                
-                items.append(item)
-        #return items
+        for t in range(len(tables)):
+            ##每個table看有幾個row
+            table = tables[t].xpath('.//tr')
+            print "t = " + str(t)
+
+            for n in range(len(table)-1):
+                print "n = " + str(n)
+
+                ##每個row看有幾行            
+                tds = table[n+1].xpath('.//td')
+                print "tds = " + str(len(tds))
+
+                for day in range(len(tds)-2):
+                    print "day = " + str(day)
+                    item = NtuhItem()
+                    try:
+                        name = table[n+1].xpath('.//td')[day+2].xpath('.//font/text()').extract()
+                        if (name == []):
+                            continue
+                        
+                        item['name'] = name[0]
+                        item['hospital'] = 'ntuh'
+                        
+                        ##區分成人及兒童
+                        if (t < 2):
+                            item['dept'] = 'PSY'
+                        else:
+                            item['dept'] = 'Chld_PSY'
+                        
+
+                        item['date'] = table[0].xpath('.//b/text()')[day+2].extract().split(" ")[0]
+                        
+                        ##區分時段
+                        if (t % 2 == 0):
+                            item['time'] = 'morning'
+                        else:
+                            item['time'] = 'evening'
+
+                        item['link'] = "https://reg.ntuh.gov.tw/webadministration/" + \
+                            table[n+1].xpath('.//td')[day+2].xpath('.//a/@href').extract()[0]
+                        yield Request(item['link'], callback = self.parse_shift, meta = {'item': item})                
+                        items.append(item)
+
+                    except Exception as e:
+                        pass
+                    #print item['name']
+                    
+            #return items
 
     def parse_shift(self, response):
 
