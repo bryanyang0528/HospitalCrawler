@@ -11,7 +11,8 @@ class NtuhPsy(scrapy.Spider):
     name = "ntuhPsy"
     allowed_domains = ["gov.tw"]
     start_urls = [
-        "https://reg.ntuh.gov.tw/webadministration/DoctorTable.aspx?Dept=PSYC&Hosp=T0&SubDeptCode=&isSubDept=N&week=1"
+        "https://reg.ntuh.gov.tw/webadministration/DoctorTable.aspx?Dept=PSYC&Hosp=T0&SubDeptCode=&isSubDept=N&week=1",
+        "https://reg.ntuh.gov.tw/webadministration/DoctorTable.aspx?Dept=PSYC&Hosp=T0&SubDeptCode=&isSubDept=N&week=2"
     ]
 
     def parse(self, response):
