@@ -60,8 +60,10 @@ class NtuhPsy(scrapy.Spider):
                             item['dept'] = 'Chld_PSY'
                         
 
-                        item['date'] = table[0].xpath('.//b/text()')[day+2].extract().split(" ")[0]
-                        
+                        date = table[0].xpath('.//b/text()')[day+2].extract().split(" ")[0].split(".")
+                        date = str(int(date[0])+1911) + date[1] + date[2]
+                        item['date'] = date
+
                         ##區分時段
                         if (t % 2 == 0):
                             item['time'] = 'morning'
