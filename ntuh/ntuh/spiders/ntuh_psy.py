@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 import sys
 import scrapy
+from datetime import datetime
 from scrapy.http import Request, FormRequest, TextResponse
 from scrapy.spider import Spider
 from scrapy.selector import Selector
 from scrapy import log
 from ..items import NtuhItem
+#from scrapy.stats import Stats
 
 class NtuhPsy(scrapy.Spider):
     name = "ntuhPsy"
@@ -52,6 +54,7 @@ class NtuhPsy(scrapy.Spider):
                         
                         item['name'] = name[0]
                         item['hospital'] = 'ntuh'
+                        item['crawlTime'] = unicode(datetime.now().strftime("%Y%m%d %H:%M"))
                         
                         ##區分成人及兒童
                         if (t < 2):
@@ -68,10 +71,11 @@ class NtuhPsy(scrapy.Spider):
                         if (t % 2 == 0):
                             item['time'] = 'morning'
                         else:
-                            item['time'] = 'evening'
+                            item['time'] = 'afternoon'
 
                         item['link'] = "https://reg.ntuh.gov.tw/webadministration/" + \
                             table[n+1].xpath('.//td')[day+2].xpath('.//a/@href').extract()[0]
+                        
                         yield Request(item['link'], callback = self.parse_shift, meta = {'item': item})                
                         items.append(item)
 
