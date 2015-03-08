@@ -9,12 +9,12 @@ from scrapy import log
 from ..items import NtuhItem
 #from scrapy.stats import Stats
 
-class NtuhPSY(scrapy.Spider):
-    name = "ntuhPSY"
+class NtuhMED(scrapy.Spider):
+    name = "ntuhMED"
     allowed_domains = ["gov.tw"]
     start_urls = [
-        "https://reg.ntuh.gov.tw/webadministration/DoctorTable.aspx?Dept=PSYC&Hosp=T0&SubDeptCode=&isSubDept=N&week=1",
-        "https://reg.ntuh.gov.tw/webadministration/DoctorTable.aspx?Dept=PSYC&Hosp=T0&SubDeptCode=&isSubDept=N&week=2"
+        "https://reg.ntuh.gov.tw/webadministration/DoctorTable.aspx?Dept=MED&Hosp=T0&SubDeptCode=&isSubDept=N&week=1",
+        "https://reg.ntuh.gov.tw/webadministration/DoctorTable.aspx?Dept=MED&Hosp=T0&SubDeptCode=&isSubDept=N&week=2"
     ]
 
     def parse(self, response):
@@ -59,9 +59,9 @@ class NtuhPSY(scrapy.Spider):
                         
                         ##區分成人及兒童
                         if (t < 2):
-                            item['dept'] = 'PSY'
+                            item['dept'] = 'MED'
                         else:
-                            item['dept'] = 'Chld_PSY'
+                            item['dept'] = 'Chld_MED'
                         
 
                         date = table[0].xpath('.//b/text()')[day+2].extract().split(" ")[0].split(".")
