@@ -9,7 +9,7 @@ from scrapy import log
 from ..items import NtuhItem
 #from scrapy.stats import Stats
 
-class NtuhPSY(scrapy.Spider):
+class NtuhPsy(scrapy.Spider):
     name = "ntuhPSY"
     allowed_domains = ["gov.tw"]
     start_urls = [
@@ -89,7 +89,16 @@ class NtuhPSY(scrapy.Spider):
     def parse_shift(self, response):
 
         item = response.meta['item']
-        isFull = Selector(response).xpath('//table[@id= "DataTable"]/tr')[1].\
+        # 先判斷有幾個欄位，有些醫生兩個禮拜都有診有些醫生只有一個禮拜
+        rows = len(Selector(response).xpath('//table[@id= "DataTable"]/tr'))
+
+        # 如果診數>1 欄位讀取依週數判斷
+        if (rows > 2):
+            week = int(response.request.headers.get('Referer', None)[-1])
+        else:
+            week = 1
+
+        isFull = Selector(response).xpath('//table[@id= "DataTable"]/tr')[week].\
             xpath('.//font/text()').extract()[0].strip()
 
         if (isFull == u'名額已滿'):
