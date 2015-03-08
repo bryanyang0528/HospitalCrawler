@@ -8,13 +8,13 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #
 
-BOT_NAME = 'ntuhPsy'
+BOT_NAME = 'ntuh'
 
 SPIDER_MODULES = ['ntuh.spiders']
 NEWSPIDER_MODULE = 'ntuh.spiders'
 USER_AGENT = "Chrome/40.0.2214.111"
 DOWNLOAD_DELAY = 0.25
-LOG_FILE = 'log.txt'
+#LOG_FILE = 'log.txt'
 
 FEED_URI = 'export.json'
 FEED_FORMAT = 'json'

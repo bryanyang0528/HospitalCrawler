@@ -19,4 +19,5 @@ class NtuhItem(scrapy.Item):
     name = Field()
     link = Field()
     full = Field()
+    outpatient = Field()
 

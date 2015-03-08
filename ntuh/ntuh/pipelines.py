@@ -9,7 +9,7 @@ import json
 from scrapy.contrib.exporter import BaseItemExporter, JsonLinesItemExporter, JsonItemExporter
 
 
-class NtuhPipeline(object):
+class NtuhPipelines(object):
     def process_item(self, item, spider):
         return item
 

@@ -15,11 +15,11 @@ NEWSPIDER_MODULE = 'cgmh.spiders'
 
 USER_AGENT = "Chrome/40.0.2214.111"
 DOWNLOAD_DELAY = 0.25
-LOG_FILE = 'log.txt'
+#LOG_FILE = 'log.txt'
 
 FEED_URI = 'export.json'
 FEED_FORMAT = 'json'
 FEED_EXPORTERS = {
-   'json': 'ntuh.pipelines.UnicodeJsonItemExporter'
+   'json': 'cgmh.pipelines.UnicodeJsonItemExporter'
 }
 
