@@ -52,6 +52,7 @@ class NtuhPsy(scrapy.Spider):
                         if (name == []):
                             continue
                         
+                        item['outpatient'] = table[n+1].xpath('.//td')[0].xpath('.//b/text()')[0].extract()
                         item['name'] = name[0]
                         item['hospital'] = 'ntuh'
                         item['crawlTime'] = unicode(datetime.now().strftime("%Y%m%d %H:%M"))
