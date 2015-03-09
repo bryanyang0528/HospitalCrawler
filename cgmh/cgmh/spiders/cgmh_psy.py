@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys
 import scrapy
+import time
 from datetime import datetime
 from scrapy.http import Request, FormRequest, TextResponse
 from scrapy.spider import Spider
@@ -10,7 +11,7 @@ from ..items import CgmhItem
 #from scrapy.stats import Stats
 
 class CgmhPsy(scrapy.Spider):
-	name = "cgmhPsy"
+	name = "cgmhPSY"
 	allowed_domains = ["org.tw"]
 	start_urls = [
 		"https://www.cgmh.org.tw/register/RMSTimeTable.aspx?dpt=13600A"
@@ -31,13 +32,50 @@ class CgmhPsy(scrapy.Spider):
 		
 		for t in range(len(tables)-1):
 			##每個table看有幾個row
-			table = tables[t+1]
-			##print "list: " + str(t) + "," + table.extract()
+			table = tables[t+1].xpath('.//td')
+			#print "list: " + str(t) + "," + table[0].extract()
 			
-			for n in table.xpath('.//td'):
-				print n.extract()
+			
+
+			for column in range(3):
+				#print table[column+1].extract()
+				
+				br = table[column+1].extract().split('<br>')
+
+				#當一個欄位有兩個人的時候，用br分開
+				for b in range(len(br)-1):
+					item = CgmhItem()
+					n = Selector(text = br[b])
+					
+					nameFull = n.xpath('.//span/text()').extract()
+					
+					if (nameFull != []):
+						item['name'] = nameFull[0]
+						status = n.xpath('.//font/text()')[0].extract()
+						
+
+						if (status == u'(額滿)'):
+							item['full'] = '名額已滿'
+						elif (status == u'(停診)'):
+							continue
+
+					else:
+						item['name'] = n.xpath('.//a/text()')[0].extract()
+						item['full'] = '可掛號' 
+					
+					
+					##將中文的年月日轉換成yyddmm
+					date = table[0].xpath('.//text()')[0].extract().encode('utf-8')
+					dateFormat = '%Y年%m月%d日'
+					date = time.strptime(date, dateFormat)
+					item['date'] = time.strftime("%Y%m%d", date)
+
+					
+					items.append(item)
 
 
+		return items
+			
 '''
 			for n in range(len(table)-1):
 				print "n = " + str(n)
