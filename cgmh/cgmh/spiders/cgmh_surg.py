@@ -11,7 +11,7 @@ from scrapy import log
 from ..items import CgmhItem
 #from scrapy.stats import Stats
 
-class CgmhPsy(scrapy.Spider):
+class CgmhSURG(scrapy.Spider):
 	name = "cgmhSURG"
 	allowed_domains = ["org.tw"]
 	start_urls = [
