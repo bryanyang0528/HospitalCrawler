@@ -89,6 +89,7 @@ class CgmhURO(scrapy.Spider):
 					item['crawlTime'] = unicode(datetime.now().strftime("%Y%m%d %H:%M"))
 					item['hospital'] = 'cgmh_tpe'
 					item['dept'] = 'URO'
+					item['title'] = sel.xpath('.//span[@id="ctl00_ContentPlaceHolder1_lbDptTitle"]//span/text()')[0].extract()
 
 					items.append(item)
 

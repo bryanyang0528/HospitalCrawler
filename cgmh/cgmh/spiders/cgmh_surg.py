@@ -15,7 +15,7 @@ class CgmhSURG(scrapy.Spider):
 	name = "cgmhSURG"
 	allowed_domains = ["org.tw"]
 	start_urls = [
-		"https://www.cgmh.org.tw/register/RMSTimeTable.aspx?dpt=32120A321A0A321B0A"
+		"https://www.cgmh.org.tw/register/RMSTimeTable.aspx?dpt=12120A121A0A121B0A121T0A"
 	]
 
 	def parse(self, response):
@@ -89,6 +89,7 @@ class CgmhSURG(scrapy.Spider):
 					item['crawlTime'] = unicode(datetime.now().strftime("%Y%m%d %H:%M"))
 					item['hospital'] = 'cgmh_tpe'
 					item['dept'] = 'SURG'
+					item['title'] = sel.xpath('.//span[@id="ctl00_ContentPlaceHolder1_lbDptTitle"]//span/text()')[0].extract()
 
 					items.append(item)
 

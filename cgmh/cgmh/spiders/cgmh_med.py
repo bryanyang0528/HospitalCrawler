@@ -11,7 +11,7 @@ from scrapy import log
 from ..items import CgmhItem
 #from scrapy.stats import Stats
 
-class CgmhPsy(scrapy.Spider):
+class CgmhMED(scrapy.Spider):
 	name = "cgmhMED"
 	allowed_domains = ["org.tw"]
 	start_urls = [
@@ -88,7 +88,8 @@ class CgmhPsy(scrapy.Spider):
 					item['date'] = time.strftime("%Y%m%d", date)
 					item['crawlTime'] = unicode(datetime.now().strftime("%Y%m%d %H:%M"))
 					item['hospital'] = 'cgmh_tpe'
-					item['dept'] = 'PSY'
+					item['dept'] = 'MED'
+					item['title'] = sel.xpath('.//span[@id="ctl00_ContentPlaceHolder1_lbDptTitle"]//span/text()')[0].extract()
 
 					items.append(item)
 
