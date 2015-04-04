@@ -8,7 +8,7 @@
 import scrapy
 from scrapy.item import Item, Field
 
-class NtuhItem(scrapy.Item):
+class MmhItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     crawlTime = Field()
@@ -20,4 +20,5 @@ class NtuhItem(scrapy.Item):
     link = Field()
     full = Field()
     outpatient = Field()
+    title = Field()
 
