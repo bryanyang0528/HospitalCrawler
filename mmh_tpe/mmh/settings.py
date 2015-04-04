@@ -21,5 +21,6 @@ FEED_FORMAT = 'json'
 FEED_EXPORTERS = {
    'json': 'mmh.pipelines.UnicodeJsonItemExporter'
 }
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'ntuh (+http://www.yourdomain.com)'
