@@ -14,14 +14,14 @@ from ..items import CgmhItem
 #from scrapy.stats import Stats
 
 class Cgmh(CrawlSpider):
-	name = "cgmh_tpe"
+	name = "cgmh_lk"
 	allowed_domains = ["org.tw"]
 	start_urls = [
-		"https://www.cgmh.org.tw/register/Department.aspx?dpt=1"
+		"https://www.cgmh.org.tw/register/Department.aspx?dpt=3"
 	]
 
 	rules = [
-		Rule(LinkExtractor(allow = ('RMSTimeTable\.aspx\?dpt=.*')),
+		Rule(LinkExtractor(allow = ('RMSTimeTable\.aspx\?dpt=.*'), deny= ('RMSTimeTable\.aspx\?dpt=5.*')),
 		callback = 'parse_table', follow = True)
 	 ]
 
@@ -89,7 +89,7 @@ class Cgmh(CrawlSpider):
 					date = time.strptime(date, dateFormat)
 					item['date'] = time.strftime("%Y%m%d", date)
 					item['crawlTime'] = unicode(datetime.now().strftime("%Y%m%d %H:%M"))
-					item['hospital'] = 'cgmh_tpe'
+					item['hospital'] = 'cgmh_lk'
 					item['dept'] = sel.xpath('.//span[@id="ctl00_ContentPlaceHolder1_lbDptTitle"]//span/text()')[0].extract().split(" ")[1]
 
 					items.append(item)

@@ -13,15 +13,15 @@ from scrapy import log
 from ..items import CgmhItem
 #from scrapy.stats import Stats
 
-class Cgmh(CrawlSpider):
-	name = "cgmh_tpe"
+class CgmhPsy(CrawlSpider):
+	name = "cgmh_kh"
 	allowed_domains = ["org.tw"]
 	start_urls = [
-		"https://www.cgmh.org.tw/register/Department.aspx?dpt=1"
+		"https://www.cgmh.org.tw/register/Department.aspx?dpt=8"
 	]
 
 	rules = [
-		Rule(LinkExtractor(allow = ('RMSTimeTable\.aspx\?dpt=.*')),
+		Rule(LinkExtractor(allow = ('RMSTimeTable\.aspx\?dpt=.*'),deny= ('RMSTimeTable\.aspx\?dpt=T.*')),
 		callback = 'parse_table', follow = True)
 	 ]
 
